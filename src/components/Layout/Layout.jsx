@@ -3,10 +3,13 @@ import React from "react";
 import * as s from "./styles";
 import MainHeader from "../MainHeader/MainHeader";
 
-function Layout({ children }) {
+function Layout({ children, showSideBar, setShowSideBar }) {
     return (
         <div css={s.container}>
-            <MainHeader />
+            <MainHeader
+                showSideBar={showSideBar}
+                setShowSideBar={setShowSideBar}
+            />
             {children}
         </div>
     );

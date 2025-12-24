@@ -40,7 +40,7 @@ export const leftBox = css`
     & > div {
         font-size: 18px;
         font-weight: 1000;
-        color: #4f39f6;
+        color: oklch(51.1% 0.262 276.966);
         cursor: default;
     }
 `;
@@ -61,7 +61,7 @@ export const rightBox = css`
         transition: all 0.15s ease;
     }
 
-    & > button:nth-child(1) {
+    & > button:nth-of-type(1) {
         background-color: transparent;
 
         &:hover {
@@ -69,7 +69,7 @@ export const rightBox = css`
         }
     }
 
-    & > button:nth-child(2) {
+    & > button:nth-of-type(2) {
         background: #4f39f6;
         background: linear-gradient(
             90deg,
@@ -87,4 +87,12 @@ export const rightBox = css`
             );
         }
     }
+`;
+
+export const sideBarContainer = (showSideBar) => css`
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: ${showSideBar ? "0" : "-300px"};
+    transition: all 0.15s ease-in-out;
 `;
