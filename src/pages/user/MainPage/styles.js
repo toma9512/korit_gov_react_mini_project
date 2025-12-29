@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 
-export const container = (showSideBar) => css`
+export const container = css`
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     flex-grow: 1;
     background: #eef2ff;
     background: linear-gradient(
@@ -11,10 +11,10 @@ export const container = (showSideBar) => css`
         rgba(250, 245, 255, 1) 50%,
         rgba(253, 242, 248, 1) 100%
     );
-    padding: 0px 200px;
+    padding: 0px 50px;
     box-sizing: border-box;
-    ${showSideBar ? "filter: blur(4px);" : ""}
     transition: all 0.2s ease-in-out;
+    overflow: auto;
 `;
 
 export const mainContainer = css`

@@ -2,13 +2,14 @@ import { css } from "@emotion/react";
 
 export const container = css`
     width: 100%;
-    height: 70px;
-    padding: 0px 200px;
+    height: 64px;
+    padding: 0px 50px;
+    border-bottom: 1px solid #dbdbdb;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #dbdbdb;
+    flex-shrink: 0;
 `;
 
 export const leftBox = css`
@@ -41,7 +42,7 @@ export const leftBox = css`
         font-size: 18px;
         font-weight: 1000;
         color: oklch(51.1% 0.262 276.966);
-        cursor: default;
+        cursor: pointer;
     }
 `;
 

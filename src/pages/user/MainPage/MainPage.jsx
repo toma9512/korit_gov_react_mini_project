@@ -4,11 +4,9 @@ import { MdOutlineChatBubbleOutline } from "react-icons/md";
 import React from "react";
 import { FiUsers, FiZap } from "react-icons/fi";
 
-function MainPage({ showSideBar, setShowSideBar }) {
+function MainPage() {
     return (
-        <div
-            css={s.container(showSideBar)}
-            onClick={() => setShowSideBar((prev) => prev ? !prev : prev)}>
+        <div css={s.container}>
             <div css={s.mainContainer}>
                 <div css={s.topBox}>
                     <h1>

@@ -5,4 +5,15 @@ export const container = css`
     height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: auto;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`;
+
+export const filter = (showSideBar) => css`
+    ${showSideBar ? "filter: blur(4px);" : ""}
+    height: 100%;
 `;
