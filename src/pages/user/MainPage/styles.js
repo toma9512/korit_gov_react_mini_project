@@ -3,7 +3,6 @@ import { css } from "@emotion/react";
 export const container = css`
     width: 100vw;
     height: 100%;
-    flex-grow: 1;
     background: #eef2ff;
     background: linear-gradient(
         90deg,

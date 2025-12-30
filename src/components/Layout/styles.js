@@ -13,7 +13,7 @@ export const container = css`
     }
 `;
 
-export const filter = (showSideBar) => css`
+export const blurBox = (showSideBar) => css`
     ${showSideBar ? "filter: blur(4px);" : ""}
     height: 100%;
 `;

@@ -2,11 +2,12 @@ import { css } from "@emotion/react";
 
 export const container = css`
     display: flex;
-    width: 100%;
     height: 100%;
+    width: 100%;
     align-items: center;
     justify-content: center;
     background-color: #fafafa;
+    padding-bottom: 50px;
 `;
 
 export const mainContainer = css`
@@ -132,19 +133,26 @@ export const boardBottomBox = css`
         align-items: center;
         gap: 10px;
 
-        & > div {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background-color: aqua;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
         & > p {
             font-size: 14xp;
             color: #0a0a0a;
         }
     }
 `
+
+export const profileBox = css`
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    & > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+`;

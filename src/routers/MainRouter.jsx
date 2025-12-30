@@ -7,11 +7,14 @@ import BoardRouter from "./BoardRouter";
 import { useQuery } from "@tanstack/react-query";
 import { getPrincipal } from "../apis/auth/authApis";
 import { usePrincipalState } from "../store/usePrincipalState";
+import AccountRouter from "./AccountRouter";
+import ProtectedRouter from "./ProtectedRouter";
 
 function MainRouter() {
     const accessToken = localStorage.getItem("AccessToken");
-    const { isLoggedIn, principal, login, logout } = usePrincipalState();
-    const { data, isLoading } = useQuery({
+    const { isLoggedIn, principal, login, logout, setLoading } =
+        usePrincipalState();
+    const { data, isLoading, refetch } = useQuery({
         queryKey: ["getPrincipal"],
         queryFn: getPrincipal,
         refetch: 1,
@@ -24,6 +27,10 @@ function MainRouter() {
         }
     }, [data, login]);
 
+    useEffect(() => {
+        setLoading(isLoading);
+    }, [isLoading]);
+
     return (
         <>
             <Routes>
@@ -31,18 +38,29 @@ function MainRouter() {
                     path="/"
                     element={
                         <Layout>
-                            <MainPage
-                            />
+                            <MainPage />
                         </Layout>
+                    }
+                />
+                <Route
+                    path="/board/*"
+                    element={
+                        <ProtectedRouter>
+                            <Layout>
+                                <BoardRouter />
+                            </Layout>
+                        </ProtectedRouter>
                     }
                 />
                 <Route path="/auth/*" element={<AuthRouter />} />
                 <Route
-                    path="/board/*"
+                    path="/profile/*"
                     element={
-                        <Layout>
-                            <BoardRouter />
-                        </Layout>
+                        <ProtectedRouter>
+                            <Layout>
+                                <AccountRouter />
+                            </Layout>
+                        </ProtectedRouter>
                     }
                 />
             </Routes>

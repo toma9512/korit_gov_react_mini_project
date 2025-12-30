@@ -13,7 +13,7 @@ function Layout({ children }) {
                 setShowSideBar={setShowSideBar}
             />
             <div
-                css={s.filter(showSideBar)}
+                css={s.blurBox(showSideBar)}
                 onClick={() => setShowSideBar((prev) => (prev ? !prev : prev))}>
                 {children}
             </div>

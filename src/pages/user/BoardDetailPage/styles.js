@@ -79,20 +79,27 @@ export const boardBottomBox = css`
         align-items: center;
         gap: 10px;
 
-        & > div {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background-color: aqua;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
         & > p {
             font-size: 14xp;
             color: #0a0a0a;
         }
+    }
+`;
+
+export const profileBox = css`
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    & > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 `;
 
@@ -104,3 +111,4 @@ export const bottomBox = css`
         color: #364153;
     }
 `;
+
