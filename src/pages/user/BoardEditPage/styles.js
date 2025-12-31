@@ -122,14 +122,14 @@ export const innerBox = css`
 
     & > div:nth-of-type(4) {
         display: flex;
-        justify-content: end;
+        justify-content: space-between;
         align-items: center;
         border-top: 1px solid #dbdbdb;
         padding-top: 24px;
         box-sizing: border-box;
         gap: 10px;
 
-        & > button:nth-of-type(1) {
+        & > button {
             cursor: pointer;
             padding: 8px 24px;
             font-size: 14px;
@@ -143,28 +143,49 @@ export const innerBox = css`
             }
         }
 
-        & > button:nth-of-type(2) {
-            cursor: pointer;
-            padding: 8px 24px;
-            font-size: 14px;
-            border-radius: 8px;
-            border: none;
-            box-sizing: border-box;
-            background: #4f39f6;
-            background: linear-gradient(
-                90deg,
-                rgba(79, 57, 246, 0.9) 0%,
-                rgba(152, 16, 250, 0.9) 100%
-            );
-            color: white;
+        & > div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
 
-            &:hover {
+            & > button:nth-of-type(1) {
+                cursor: pointer;
+                padding: 8px 24px;
+                font-size: 14px;
+                background-color: white;
+                border: 1px solid #dbdbdb;
+                border-radius: 8px;
+                box-sizing: border-box;
+
+                &:hover {
+                    background-color: #fafafa;
+                }
+            }
+
+            & > button:nth-of-type(2) {
+                cursor: pointer;
+                padding: 8px 24px;
+                font-size: 14px;
+                border-radius: 8px;
+                border: none;
+                box-sizing: border-box;
                 background: #4f39f6;
                 background: linear-gradient(
                     90deg,
-                    rgba(79, 57, 246, 1) 0%,
-                    rgba(152, 16, 250, 1) 100%
+                    rgba(79, 57, 246, 0.9) 0%,
+                    rgba(152, 16, 250, 0.9) 100%
                 );
+                color: white;
+
+                &:hover {
+                    background: #4f39f6;
+                    background: linear-gradient(
+                        90deg,
+                        rgba(79, 57, 246, 1) 0%,
+                        rgba(152, 16, 250, 1) 100%
+                    );
+                }
             }
         }
     }

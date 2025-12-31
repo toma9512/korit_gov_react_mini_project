@@ -4,14 +4,17 @@ import * as s from "./styles";
 import React, { useEffect, useState } from "react";
 import { usePrincipalState } from "../../../store/usePrincipalState";
 import { MdOutlineTipsAndUpdates } from "react-icons/md";
-import { getBoardByBoardIdRequest } from "../../../apis/board/boardApis";
+import {
+    getBoardByBoardIdRequest,
+    modifyBoardByBoardIdRequest,
+    removeBoardByBoardIdRequest,
+} from "../../../apis/board/boardApis";
 
 function BoardEditPage() {
     const navigate = useNavigate();
     const [titleInputValue, setTitleInputValue] = useState("");
     const [contentInputValue, setContentInputValue] = useState("");
     const { principal } = usePrincipalState();
-    const [boardData, setBoardData] = useState({});
     const { boardId } = useParams();
 
     const titleInputOnChangeHandler = (e) => {
@@ -22,7 +25,26 @@ function BoardEditPage() {
         setContentInputValue(e.target.value);
     };
 
-    const submitOnClickHandler = () => {
+    const removeOnClickHandler = (e) => {
+        if (!confirm("정말로 게시물을 삭제하시겠습니까?")) {
+            return;
+        }
+
+        removeBoardByBoardIdRequest({
+            boardId: boardId,
+            userId: principal.userId,
+        }).then((response) => {
+            if (response.data.status === "success") {
+                alert("게시물이 삭제되었습니다.");
+                navigate(`/profile/${principal.username}`);
+            } else if (response.data.status === "failed") {
+                alert(response.data.message);
+                return;
+            }
+        });
+    };
+
+    const editOnClickHandler = () => {
         if (
             titleInputValue.trim().length === 0 ||
             contentInputValue.trim().length === 0
@@ -40,14 +62,15 @@ function BoardEditPage() {
             return;
         }
 
-        addBoardRequest({
+        modifyBoardByBoardIdRequest({
+            boardId: boardId,
             title: titleInputValue,
             content: contentInputValue,
             userId: principal.userId,
         }).then((response) => {
             if (response.data.status === "success") {
                 alert("게시물이 수정 되었습니다.");
-                navigate("/board/list");
+                navigate(`/board/${boardId}`);
             } else if (response.data.status === "failed") {
                 alert(response.data.message);
                 return;
@@ -61,15 +84,14 @@ function BoardEditPage() {
         }
         setTitleInputValue("");
         setContentInputValue("");
-        navigate(-1);
+        navigate(`/profile/${principal.username}`);
     };
 
     useEffect(() => {
         getBoardByBoardIdRequest(boardId).then((response) => {
             if (response.data.status === "success") {
-                setBoardData(response.data.data);
-                setTitleInputValue(response.data.data.title)
-                setContentInputValue(response.data.data.content)
+                setTitleInputValue(response.data.data.title);
+                setContentInputValue(response.data.data.content);
             } else if (response.data.status === "failed") {
                 alert(response.data.message);
             }
@@ -104,7 +126,7 @@ function BoardEditPage() {
                                 onChange={contentInputOnChangeHandler}
                                 id="content"
                                 placeholder="내용을 입력하세요"
-                            value={contentInputValue}></textarea>
+                                value={contentInputValue}></textarea>
                         </div>
                         <div>
                             <span>{contentInputValue.length}자</span>
@@ -115,8 +137,17 @@ function BoardEditPage() {
                             )}
                         </div>
                         <div>
-                            <button onClick={cancelOnClickHandler}>취소</button>
-                            <button>수정하기</button>
+                            <button onClick={removeOnClickHandler}>
+                                삭제하기
+                            </button>
+                            <div>
+                                <button onClick={cancelOnClickHandler}>
+                                    취소
+                                </button>
+                                <button onClick={editOnClickHandler}>
+                                    수정하기
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

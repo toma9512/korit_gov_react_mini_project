@@ -41,7 +41,10 @@ function BoardDetailPage() {
                                 <p>{boardData.username}</p>
                             </div>
                             <div>
-                                <p>{boardData.createDt}</p>
+                                <p>작성일: {boardData.createDt}</p>
+                                {boardData.updateDt && (
+                                    <p>수정일: {boardData.updateDt}</p>
+                                )}
                             </div>
                         </div>
                     </div>

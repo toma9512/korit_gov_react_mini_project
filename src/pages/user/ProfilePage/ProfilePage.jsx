@@ -1,25 +1,35 @@
 /** @jsxImportSource @emotion/react */
-import { IoArrowBack } from "react-icons/io5";
 import * as s from "./styles";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePrincipalState } from "../../../store/usePrincipalState";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../../apis/config/firebaseConfig";
 import { v4 as uuid } from "uuid";
-import { changeProfileImg } from "../../../apis/account/accountApis";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+    changeProfileImg,
+    emailSendRequest,
+    withdrawRequest,
+} from "../../../apis/account/accountApis";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getBoardListByUserIdRequest } from "../../../apis/board/boardApis";
+import { IoArrowBack } from "react-icons/io5";
 
 function ProfilePage() {
     const [progress, setProgress] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
     const navigate = useNavigate();
-    const { principal, logout } = usePrincipalState();
+    const { logout } = usePrincipalState();
     const imgInputRef = useRef();
     const queryClient = useQueryClient();
-    function onRefresh() {
-        queryClient.invalidateQueries({ queryKey: ["getPrincipal"] });
-    }
+    const principalData = queryClient.getQueryData(["getPrincipal"])?.data
+        ?.data;
+    const { data, isLoading } = useQuery({
+        queryKey: ["getBoardListByUserId"],
+        queryFn: () => getBoardListByUserIdRequest(principalData?.userId),
+        enabled: !!principalData,
+        refetch: 1,
+    });
 
     const changeProfileImgMutation = useMutation({
         mutationKey: "changeProfileImg",
@@ -27,7 +37,7 @@ function ProfilePage() {
         onSuccess: (response) => {
             if (response.data.status === "success") {
                 alert("프로필 이미지가 변경되었습니다.");
-                onRefresh();
+                queryClient.invalidateQueries({ queryKey: ["getPrincipal"] });
                 setIsUploading(false);
             } else if (response.data.status === "failed") {
                 alert(response.data.message);
@@ -41,10 +51,6 @@ function ProfilePage() {
             return;
         },
     });
-
-    const onClickProfileImgHandler = (e) => {
-        imgInputRef.current.click();
-    };
 
     const onChangeFileHandler = (e) => {
         const file = e.target.files[0];
@@ -72,7 +78,6 @@ function ProfilePage() {
                 setProgress(progressPercent);
             },
             (error) => {
-                console.log(error);
                 alert("업로드 중 에러가 발생했습니다");
                 setIsUploading(false);
             },
@@ -82,7 +87,7 @@ function ProfilePage() {
                         uploadTask.snapshot.ref
                     );
                     changeProfileImgMutation.mutate({
-                        userId: principal.userId,
+                        userId: principalData.userId,
                         profileImg: downloadUrl,
                     });
                 } catch (error) {
@@ -91,6 +96,43 @@ function ProfilePage() {
                 }
             }
         );
+    };
+
+    const onClickProfileImgHandler = () => {
+        imgInputRef.current.click();
+    };
+
+    const onClickEmailSendHandler = () => {
+        if (!confirm("이메일 인증코드를 전송하시겠습니까?")) {
+            return;
+        }
+
+        emailSendRequest().then((response) => {
+            if (response.data.status === "success") {
+                alert(response.data.message);
+                return;
+            } else if (response.data.status === "failed") {
+                alert(response.data.message);
+                return;
+            }
+        });
+    };
+
+    const onClickWithdrawHandler = () => {
+        if (!confirm("회원 탈퇴를 하시겠습니까?")) {
+            return;
+        }
+
+        withdrawRequest().then((response) => {
+            if (response.data.status === "success") {
+                alert(response.data.message);
+                logout();
+                return;
+            } else if (response.data.status === "failed") {
+                alert(response.data.message);
+                return;
+            }
+        });
     };
 
     return (
@@ -108,7 +150,7 @@ function ProfilePage() {
                                 css={s.profileImage}
                                 onClick={onClickProfileImgHandler}>
                                 <img
-                                    src={principal?.profileImg}
+                                    src={principalData?.profileImg}
                                     alt="profileImg"
                                 />
                                 <input
@@ -119,17 +161,21 @@ function ProfilePage() {
                                 />
                             </div>
                             <div>
-                                <h3>{principal?.username}</h3>
-                                <p>{principal?.email}</p>
+                                <h3>{principalData?.username}</h3>
+                                <p>{principalData?.email}</p>
                             </div>
                         </div>
                         <div>
                             <button onClick={() => logout()}>로그아웃</button>
+                            {principalData?.authorities[0].authority ===
+                                "ROLE_ADMIN" && (
+                                <button>관리자 대시보드</button>
+                            )}
                         </div>
                     </div>
                     <div css={s.profileBottomBox}>
                         <div>작성한 게시물</div>
-                        <p>3</p>
+                        <p>{data?.data?.data.length}</p>
                     </div>
                 </div>
                 <div css={s.profileSettingBox}>
@@ -138,18 +184,60 @@ function ProfilePage() {
                         <p>계정 보안 및 정보를 관리하세요</p>
                     </div>
                     <div css={s.settingButtonBox}>
-                        <button>비밀번호 변경</button>
-                        <button>이메일 인증</button>
-                        <button>회원탈퇴</button>
+                        <button
+                            onClick={() =>
+                                navigate("/profile/change/password")
+                            }>
+                            비밀번호 변경
+                        </button>
+                        {principalData?.authorities[0]?.authority !==
+                            "ROLE_USER" && (
+                            <button onClick={onClickEmailSendHandler}>
+                                이메일 인증
+                            </button>
+                        )}
+                        <button onClick={onClickWithdrawHandler}>
+                            회원탈퇴
+                        </button>
                     </div>
                 </div>
                 <div css={s.profileBoardBox}>
                     <div>
                         <h3>내가 작성한 게시물</h3>
-                        <p>총 0개의 게시물을 작성했습니다</p>
+                        <p>
+                            총 {data?.data?.data.length}개의 게시물을
+                            작성했습니다
+                        </p>
                     </div>
                     <div css={s.boardBox}>
-                        <p>작성한 게시물이 없습니다.</p>
+                        <ul>
+                            {data?.data?.data.map((board) => (
+                                <li
+                                    key={board.boardId}
+                                    onClick={() =>
+                                        navigate(`/board/edit/${board.boardId}`)
+                                    }>
+                                    <div>
+                                        <h4>{board.title}</h4>
+                                        <p>{board.content}</p>
+                                    </div>
+                                    <div css={s.boardBottomBox}>
+                                        <div>
+                                            <div css={s.profileImageBox}>
+                                                <img
+                                                    src={board.profileImg}
+                                                    alt="profileImg"
+                                                />
+                                            </div>
+                                            <p>{board.username}</p>
+                                        </div>
+                                        <div>
+                                            <p>{board.createDt}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
             </div>

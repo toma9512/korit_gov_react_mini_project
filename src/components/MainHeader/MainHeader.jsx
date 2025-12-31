@@ -10,11 +10,6 @@ function MainHeader({ showSideBar, setShowSideBar }) {
     const navigate = useNavigate();
     const { isLoggedIn, principal, loading, login, logout } =
         usePrincipalState();
-    
-    const style = {
-        display: "none",
-    };
-
 
     return (
         <div css={s.container}>
