@@ -64,10 +64,34 @@ export const topBox = css`
     padding: 24px;
     border-bottom: 1px solid #dbdbdb;
 
-    & > h4 {
-        font-size: 30px;
-        font-weight: 500;
-        color: #0a0a0a;
+    & > div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & > h4 {
+            font-size: 30px;
+            font-weight: 500;
+            color: #0a0a0a;
+        }
+
+        & > div > button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            padding: 6px 6px;
+            border: none;
+            box-sizing: border-box;
+            background-color: red;
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+
+            &:hover {
+                background-color: #ee0000ff;
+            }
+        }
     }
 `;
 
@@ -119,4 +143,3 @@ export const bottomBox = css`
         color: #364153;
     }
 `;
-

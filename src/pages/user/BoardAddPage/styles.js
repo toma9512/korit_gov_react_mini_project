@@ -13,6 +13,7 @@ export const container = css`
     display: flex;
     justify-content: center;
     align-items: start;
+    overflow: auto;
 `;
 
 export const mainContainer = css`
