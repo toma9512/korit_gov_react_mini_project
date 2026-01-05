@@ -8,8 +8,10 @@ import { FaChartBar } from "react-icons/fa";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserListRequest } from "../../../apis/admin/adminApis";
 import { getBoardListRequest } from "../../../apis/board/boardApis";
+import { usePrincipalState } from "../../../store/usePrincipalState";
 
 function DashBoardPage() {
+    const { logout } = usePrincipalState();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData(["getPrincipal"])?.data.data;
@@ -38,7 +40,7 @@ function DashBoardPage() {
                             <IoArrowBack />
                             사용자 페이지로
                         </button>
-                        <button>로그아웃</button>
+                        <button onClick={() => logout()}>로그아웃</button>
                     </div>
                 </div>
                 <div css={s.statusContainer}>
