@@ -7,7 +7,6 @@ export const container = css`
     display: flex;
     justify-content: center;
     padding: 80px 0;
-    box-sizing: border-box;
 `;
 
 export const mainContainer = css`

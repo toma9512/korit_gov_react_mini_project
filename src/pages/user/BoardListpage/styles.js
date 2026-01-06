@@ -2,7 +2,6 @@ import { css } from "@emotion/react";
 
 export const container = css`
     display: flex;
-    height: 100%;
     width: 100%;
     align-items: center;
     justify-content: center;
@@ -156,3 +155,11 @@ export const profileBox = css`
         object-fit: cover;
     }
 `;
+
+export const loaderBox = css`
+    width: 100%;
+    padding: 50px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`

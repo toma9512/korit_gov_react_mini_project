@@ -14,8 +14,10 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBoardListByUserIdRequest } from "../../../apis/board/boardApis";
 import { IoArrowBack } from "react-icons/io5";
+import { BeatLoader } from "react-spinners";
 
 function ProfilePage() {
+    const [isSending, setIsSending] = useState(false);
     const [progress, setProgress] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
     const navigate = useNavigate();
@@ -74,7 +76,6 @@ function ProfilePage() {
                 const progressPercent = Math.round(
                     (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 );
-                console.log(progressPercent);
                 setProgress(progressPercent);
             },
             (error) => {
@@ -107,11 +108,15 @@ function ProfilePage() {
             return;
         }
 
+        setIsSending(true);
+
         emailSendRequest().then((response) => {
             if (response.data.status === "success") {
+                setIsSending(false);
                 alert(response.data.message);
                 return;
             } else if (response.data.status === "failed") {
+                setIsSending(false);
                 alert(response.data.message);
                 return;
             }
@@ -169,7 +174,12 @@ function ProfilePage() {
                             <button onClick={() => logout()}>로그아웃</button>
                             {principalData?.authorities[0].authority ===
                                 "ROLE_ADMIN" && (
-                                <button onClick={() => navigate("/admin/dashboard")}>관리자 대시보드</button>
+                                <button
+                                    onClick={() =>
+                                        navigate("/admin/dashboard")
+                                    }>
+                                    관리자 대시보드
+                                </button>
                             )}
                         </div>
                     </div>
@@ -244,6 +254,15 @@ function ProfilePage() {
             {isUploading ? (
                 <div css={s.progressBox}>
                     <h1>{progress}%</h1>
+                    <BeatLoader color="#4f39f6" size={30} />
+                </div>
+            ) : (
+                <></>
+            )}
+
+            {isSending ? (
+                <div css={s.spinnerBox}>
+                    <BeatLoader color="#4f39f6" size={30} />
                 </div>
             ) : (
                 <></>

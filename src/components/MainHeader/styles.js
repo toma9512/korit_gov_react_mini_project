@@ -10,6 +10,7 @@ export const container = css`
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
+    background-color: white;
 `;
 
 export const leftBox = css`

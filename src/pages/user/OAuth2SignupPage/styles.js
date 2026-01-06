@@ -2,7 +2,6 @@ import { css } from "@emotion/react";
 
 export const container = css`
     width: 100vw;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,6 +12,7 @@ export const container = css`
         rgba(250, 245, 255, 1) 50%,
         rgba(253, 242, 248, 1) 100%
     );
+    padding-bottom: 50px;
 `;
 export const mainContainer = css`
     display: flex;

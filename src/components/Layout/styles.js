@@ -11,6 +11,14 @@ export const container = css`
     &::-webkit-scrollbar {
         display: none;
     }
+
+    background: #eef2ff;
+    background: linear-gradient(
+        90deg,
+        rgba(238, 242, 255, 1) 0%,
+        rgba(250, 245, 255, 1) 50%,
+        rgba(253, 242, 248, 1) 100%
+    );
 `;
 
 export const blurBox = (showSideBar) => css`

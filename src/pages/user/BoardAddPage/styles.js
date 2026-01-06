@@ -2,7 +2,6 @@ import { css } from "@emotion/react";
 
 export const container = css`
     width: 100%;
-    height: 100%;
     background: #eef2ff;
     background: linear-gradient(
         90deg,
@@ -13,7 +12,7 @@ export const container = css`
     display: flex;
     justify-content: center;
     align-items: start;
-    overflow: auto;
+    padding-bottom: 50px;
 `;
 
 export const mainContainer = css`

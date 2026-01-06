@@ -224,7 +224,26 @@ export const boardBox = css`
 `;
 
 export const progressBox = css`
-    filter: blur(0);
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.3);
+    gap: 20px;
+
+    & > h1 {
+        font-size: 60px;
+        color: #4f39f6;
+    }
+`;
+
+export const spinnerBox = css`
     height: 100vh;
     width: 100vw;
     top: 0;
@@ -240,7 +259,7 @@ export const progressBox = css`
         font-size: 60px;
         color: #0a0a0a;
     }
-`
+`;
 
 export const boardBottomBox = css`
     display: flex;

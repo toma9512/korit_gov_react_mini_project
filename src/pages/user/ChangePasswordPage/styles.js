@@ -13,10 +13,13 @@ export const container = css`
         rgba(250, 245, 255, 1) 50%,
         rgba(253, 242, 248, 1) 100%
     );
+    padding: 50px 0;
+    overflow: auto;
 `;
 export const mainContainer = css`
     display: flex;
     flex-direction: column;
+    height: 100%;
     gap: 20px;
 
     & > div > button {
